@@ -18,9 +18,23 @@ const App = () => {
 
                     {/* Wrap the PublicRoutes component with a Route component and pass the element prop to it. */}
                     <Route element={<PublicRoutes />}>
-                        {publicRoutes.map((route) => (
-                            <Route key={route.path} {...route} />
-                        ))}
+                        {publicRoutes.map((route) => {
+                            if (route.onlyLogo) {
+                                return null;
+                            }
+
+                            return <Route key={route.path} {...route} />;
+                        })}
+                    </Route>
+
+                    <Route element={<PublicRoutes onlyLogo />}>
+                        {publicRoutes.map((route) => {
+                            if (!route.onlyLogo) {
+                                return null;
+                            }
+
+                            return <Route key={route.path} {...route} />;
+                        })}
                     </Route>
                 </Routes>
             </Router>

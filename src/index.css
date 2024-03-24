@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --page-content-max-width: 1300px;
+    --page-content-min-width: 99%;
+}
+
 body {
     font-family: "Poppins", sans-serif;
+}
+
+@layer components {
+    .active-link {
+        position: relative;
+        transition: all ease 0.3s;
+    }
+    .active-link::after {
+        content: "";
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: black;
+    }
 }

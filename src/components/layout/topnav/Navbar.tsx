@@ -1,22 +1,56 @@
-import React from "react";
 import Logo from "../Logo";
-import { Link } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
-const Navbar = () => {
+interface INavbarProps {
+    hideLinks?: boolean;
+}
+
+const Navbar = ({ hideLinks }: INavbarProps) => {
     return (
-        <nav className="w-full sticky top-0 left-0 bg-transparent flex justify-between">
-            <section>
-                <Logo />
-            </section>
-            <section>
-                <menu>
-                    <li>
-                        <Link to="">Látnivalók</Link>
-                    </li>
-                    <li>Kapcsolat</li>
-                    <li>Bejelentkezés</li>
-                </menu>
-            </section>
+        <nav className="w-full sticky top-0 left-0 bg-transparent flex justify-center">
+            <div className="flex justify-between w-[var(--page-content-min-width)] max-w-[var(--page-content-max-width)]">
+                <section>
+                    <Link to="/">
+                        <Logo />
+                    </Link>
+                </section>
+                <section className="flex items-center">
+                    {!hideLinks ? (
+                        <menu className="flex gap-10 items-center font-medium">
+                            <li>
+                                <NavLink
+                                    className={({ isActive }) => {
+                                        return isActive ? "active-link" : "";
+                                    }}
+                                    to="/sights"
+                                >
+                                    Látnivalók
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    className={({ isActive }) => {
+                                        return isActive ? "active-link" : "";
+                                    }}
+                                    to="/contact"
+                                >
+                                    Kapcsolat
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink
+                                    className={({ isActive }) => {
+                                        return isActive ? "active-link" : "";
+                                    }}
+                                    to="/login"
+                                >
+                                    Bejelentkezés
+                                </NavLink>
+                            </li>
+                        </menu>
+                    ) : null}
+                </section>
+            </div>
         </nav>
     );
 };
