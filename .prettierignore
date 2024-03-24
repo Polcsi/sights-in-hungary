@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.prettierrc
+*.config.*
+*.json
+.eslintrc.cjs
+.env
+.env-example
+
+# Ignore artifacts:
+build
+coverage
