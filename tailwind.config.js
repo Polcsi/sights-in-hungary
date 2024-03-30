@@ -5,6 +5,11 @@ export default {
     extend: {
       colors: {
         'light-blue': "#A9BCD0",
+        "input": {
+          "background": "#EBEBEB",
+          "text": "#949494",
+          "border": "#949494",
+        }
       }
     },
   },
