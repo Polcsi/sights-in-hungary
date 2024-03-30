@@ -7,7 +7,7 @@ interface INavbarProps {
 
 const Navbar = ({ hideLinks }: INavbarProps) => {
     return (
-        <nav className="w-full sticky top-0 left-0 bg-transparent flex justify-center">
+        <nav className="w-full fixed top-0 left-0 bg-transparent flex justify-center z-[100]">
             <div className="flex justify-between w-[var(--page-content-min-width)] max-w-[var(--page-content-max-width)]">
                 <section>
                     <Link to="/">
