@@ -18,9 +18,9 @@ const NotFound = () => {
                     </p>
                     <Button
                         linkProps={{
-                            to: "/",
+                            href: "/",
+                            className: "mt-5",
                         }}
-                        className="mt-5"
                     >
                         Vissza a főoldalra
                     </Button>
