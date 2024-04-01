@@ -20,25 +20,48 @@ const fadeInOut = {
     },
 };
 
-interface IBasicInputFieldProps extends Partial<FieldProps>, Omit<React.InputHTMLAttributes<HTMLInputElement>, "form"> {
+type IBasicInputFieldProps = Partial<FieldProps> & (IInput | ITextArea);
+
+interface IInput extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "form"> {
     name: string;
+    icon?: React.ReactNode;
+    as?: never;
+}
+
+interface ITextArea extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, "form"> {
+    name: string;
+    icon?: never;
+    as: "textarea";
+    type?: never;
 }
 
 const BasicInputField = (props: IBasicInputFieldProps) => {
     const [_, meta] = useField(props.name);
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
-    const { className } = props;
+    const { className, icon } = props;
+    const inputRef = React.useRef<HTMLInputElement>(null);
 
     const { error, touched } = meta;
 
     return (
         <div className="grid gap-1">
             <div className="relative">
+                {icon ? (
+                    <div
+                        onClick={() => {
+                            inputRef.current?.focus();
+                        }}
+                        className="absolute left-2 top-1/2 transform -translate-y-1/2"
+                    >
+                        {icon}
+                    </div>
+                ) : null}
                 <Field
                     {...props}
+                    innerRef={inputRef}
                     type={props.type === "password" ? (showPassword ? "text" : "password") : props.type}
                     className={twMerge(
-                        "bg-input-background text-input-text rounded-md w-full outline-none focus-visible:ring-4 focus-visible:ring-blue-500 py-3 px-3 hover:ring-2 hover:ring-blue-500 transition-all duration-200 ease-in-out ring-1 ring-input-border",
+                        `bg-input-background text-input-text rounded-md w-full outline-none focus-visible:ring-4 focus-visible:ring-blue-500 py-3 px-3 hover:ring-2 hover:ring-blue-500 transition-all duration-200 ease-in-out ring-1 ring-input-border ${icon ? "pl-10" : ""}`,
                         className
                     )}
                 />

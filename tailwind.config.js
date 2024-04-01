@@ -4,11 +4,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        'light-blue': "#A9BCD0",
+        "light-blue": "#A9BCD0",
         "input": {
           "background": "#EBEBEB",
           "text": "#949494",
           "border": "#949494",
+        },
+        "gray": {
+          "primary": "#373F51"
         }
       }
     },

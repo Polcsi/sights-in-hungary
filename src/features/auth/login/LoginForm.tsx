@@ -20,8 +20,8 @@ const LoginForm = () => {
             >
                 <Form className="mx-auto">
                     <div className="grid gap-4">
-                        <BasicInputField name="email" placeholder="Email" />
-                        <BasicInputField name="password" placeholder="Jelszó" type="password" />
+                        <BasicInputField name="email" placeholder="Email" required title="Email" />
+                        <BasicInputField name="password" placeholder="Jelszó" type="password" required title="Jelszó" />
                         <Button className="bg-light-blue text-white font-medium" type="submit">
                             Bejelentkezés
                         </Button>

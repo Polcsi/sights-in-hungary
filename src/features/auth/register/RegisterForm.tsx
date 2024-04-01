@@ -9,7 +9,7 @@ const RegisterForm = () => {
         <section className="flex flex-col gap-7">
             <RegisterFormHeader />
             <Formik
-                initialValues={{}}
+                initialValues={{ firstName: "", lastName: "", email: "", password: "", passwordConfirm: "" }}
                 onSubmit={() => {}}
                 validationSchema={Yup.object().shape({
                     firstName: Yup.string().required("Kötelező mező"),
@@ -23,11 +23,17 @@ const RegisterForm = () => {
             >
                 <Form className="mx-auto">
                     <div className="grid gap-4">
-                        <BasicInputField name="firstName" placeholder="Keresztnév" />
-                        <BasicInputField name="lastName" placeholder="Vezetéknév" />
-                        <BasicInputField name="email" placeholder="Email" />
-                        <BasicInputField name="password" placeholder="Jelszó" type="password" />
-                        <BasicInputField name="passwordConfirm" placeholder="Jelszó megerősítése" type="password" />
+                        <BasicInputField required title="Keresztné" name="firstName" placeholder="Keresztnév" />
+                        <BasicInputField required title="Vezetéknév" name="lastName" placeholder="Vezetéknév" />
+                        <BasicInputField required title="Email" name="email" placeholder="Email" />
+                        <BasicInputField required title="Jelszó" name="password" placeholder="Jelszó" type="password" />
+                        <BasicInputField
+                            required
+                            title="Jelszó megerősítése"
+                            name="passwordConfirm"
+                            placeholder="Jelszó megerősítése"
+                            type="password"
+                        />
                         <Button className="bg-light-blue text-white font-medium" type="submit">
                             Regisztráció
                         </Button>
