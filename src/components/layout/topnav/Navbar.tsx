@@ -1,3 +1,4 @@
+import React from "react";
 import Logo from "../Logo";
 import { NavLink, Link } from "react-router-dom";
 
@@ -6,8 +7,45 @@ interface INavbarProps {
 }
 
 const Navbar = ({ hideLinks }: INavbarProps) => {
+    const navRef = React.useRef<HTMLDivElement>(null);
+
+    React.useEffect(() => {
+        if (navRef.current) {
+            navRef.current.style.backgroundColor = "white";
+            navRef.current.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
+            navRef.current.style.paddingTop = "0";
+        }
+        const handleScroll = () => {
+            if (navRef.current) {
+                if (window.scrollY > 100) {
+                    navRef.current.style.backgroundColor = "white";
+                    navRef.current.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
+                    navRef.current.style.paddingTop = "0";
+                } else {
+                    navRef.current.style.backgroundColor = "transparent";
+                    navRef.current.style.boxShadow = "none";
+                    navRef.current.style.paddingTop = "5px";
+                }
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
+
     return (
-        <nav className="w-screen fixed top-0 left-0 bg-transparent flex justify-center z-[100]">
+        <nav
+            ref={navRef}
+            style={{
+                background: "transparent",
+                boxShadow: "none",
+                paddingTop: "5px",
+            }}
+            className="w-screen fixed top-0 left-0 flex justify-center z-[100] transition-all duration-200 ease-in-out"
+        >
             <div className="flex justify-between w-[var(--page-content-min-width)] max-w-[var(--page-content-max-width)]">
                 <section>
                     <Link to="/">

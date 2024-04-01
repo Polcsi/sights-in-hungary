@@ -1,14 +1,12 @@
-import React from "react";
+import FooterBottom from "../../components/layout/footer/FooterBottom";
+import FooterLogo from "../../components/layout/footer/FooterLogo";
 
 const Home = () => {
     return (
-        <div>
-            <h1>Home</h1>
-            <p>Welcome to the Home page!</p>
-            <div>
-                <div></div>
-            </div>
-        </div>
+        <main>
+            <FooterLogo />
+            <FooterBottom />
+        </main>
     );
 };
 
