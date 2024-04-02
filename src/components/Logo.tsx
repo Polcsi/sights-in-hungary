@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/logo640x360.png";
+import logo from "../assets/logo640x360.png";
 import { twMerge } from "tailwind-merge";
 
 interface ILogoProps {

@@ -1,6 +1,7 @@
 import VerticalWaves from "../../../components/layout/waves/vertical/VerticalWaves";
 import Button from "../../../components/Button";
 import LoginForm from "./LoginForm";
+import Transition from "../../../components/layout/Transition";
 
 const Login = () => {
     return (
@@ -26,4 +27,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default Transition(Login);

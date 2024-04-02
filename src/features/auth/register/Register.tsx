@@ -1,4 +1,5 @@
 import Button from "../../../components/Button";
+import Transition from "../../../components/layout/Transition";
 import VerticalWaves from "../../../components/layout/waves/vertical/VerticalWaves";
 import RegisterForm from "./RegisterForm";
 
@@ -26,4 +27,4 @@ const Register = () => {
     );
 };
 
-export default Register;
+export default Transition(Register);

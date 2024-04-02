@@ -1,5 +1,6 @@
 import FooterBottom from "../../components/layout/footer/FooterBottom";
 import FooterLogo from "../../components/layout/footer/FooterLogo";
+import Transition from "../../components/layout/Transition";
 
 const Home = () => {
     return (
@@ -10,4 +11,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default Transition(Home);

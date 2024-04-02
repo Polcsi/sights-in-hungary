@@ -1,3 +1,4 @@
+import Transition from "../../components/layout/Transition";
 import HorizontalWaves from "../../components/layout/waves/horizontal/HorizontalWaves";
 import ContactForm from "./ContactForm";
 import Info from "./Info";
@@ -35,4 +36,4 @@ const Contact = () => {
     );
 };
 
-export default Contact;
+export default Transition(Contact);
