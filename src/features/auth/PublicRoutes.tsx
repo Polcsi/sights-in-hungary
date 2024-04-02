@@ -1,5 +1,5 @@
-import React from "react";
-import { Outlet } from "react-router-dom";
+import React, { Suspense } from "react";
+import { Outlet, ScrollRestoration } from "react-router-dom";
 import { Navbar } from "../../components";
 import { IRouteProps } from "../../routes";
 
@@ -9,7 +9,10 @@ const PublicRoutes = ({ onlyLogo }: IPublicRoutesProps) => {
     return (
         <React.Fragment>
             <Navbar hideLinks={onlyLogo} />
-            <Outlet />
+            <Suspense fallback={<>Loading...</>}>
+                <Outlet />
+                <ScrollRestoration />
+            </Suspense>
         </React.Fragment>
     );
 };

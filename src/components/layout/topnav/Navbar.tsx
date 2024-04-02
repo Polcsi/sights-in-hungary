@@ -11,9 +11,9 @@ const Navbar = ({ hideLinks }: INavbarProps) => {
 
     React.useEffect(() => {
         if (navRef.current) {
-            navRef.current.style.backgroundColor = "white";
-            navRef.current.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
-            navRef.current.style.paddingTop = "0";
+            navRef.current.style.backgroundColor = "transparent";
+            navRef.current.style.boxShadow = "none";
+            navRef.current.style.paddingTop = "5px";
         }
         const handleScroll = () => {
             if (navRef.current) {
@@ -48,7 +48,7 @@ const Navbar = ({ hideLinks }: INavbarProps) => {
         >
             <div className="flex justify-between w-[var(--page-content-min-width)] max-w-[var(--page-content-max-width)]">
                 <section>
-                    <Link to="/">
+                    <Link to="/" preventScrollReset={false}>
                         <Logo />
                     </Link>
                 </section>

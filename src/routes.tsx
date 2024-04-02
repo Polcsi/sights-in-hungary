@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { type RouteProps } from "react-router-dom";
+import { type RouteObject, type RouteProps } from "react-router-dom";
 
 // ? Lazy load pages
 const Home = lazy(() => import("./pages/home/Home"));
@@ -13,43 +13,43 @@ export type IRouteProps = RouteProps & {
     onlyLogo?: boolean;
 };
 
-export const publicRoutes: IRouteProps[] = [
+export const publicRoutes: RouteObject[] = [
     {
-        path: "/",
+        index: true,
         element: <Home />,
     },
     {
-        path: "/home",
+        path: "home",
         element: <Home />,
     },
     {
-        path: "/sights",
+        path: "sights",
         element: <Sights />,
     },
     {
-        path: "/login",
-        element: <Login />,
-        onlyLogo: true,
-    },
-    {
-        path: "/register",
-        element: <Register />,
-        onlyLogo: true,
-    },
-    {
-        path: "/contact",
+        path: "contact",
         element: <Contact />,
-    },
-    {
-        path: "/*",
-        element: <NotFound />,
-        onlyLogo: true,
     },
 ];
 
-export const privateRoutes: IRouteProps[] = [
+export const publicRoutesWithoutNavLinks: RouteObject[] = [
     {
-        path: "/dashboard",
+        path: "login",
+        element: <Login />,
+    },
+    {
+        path: "register",
+        element: <Register />,
+    },
+    {
+        path: "*",
+        element: <NotFound />,
+    },
+];
+
+export const privateRoutes: RouteObject[] = [
+    {
+        path: "dashboard",
         element: <div>Dashboard</div>,
     },
 ];
