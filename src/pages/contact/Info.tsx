@@ -11,7 +11,7 @@ const Info = ({ icon, children }: IInfoProps) => {
             <div className="flex items-center justify-center text-2xl bg-transparent ring-4 ring-gray-primary p-2 rounded-full text-inherit">
                 {icon}
             </div>
-            <p className="text-lg text-gray-800">{children}</p>
+            <p className="text-lg text-gray-primary">{children}</p>
         </article>
     );
 };
