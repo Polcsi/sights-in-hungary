@@ -11,10 +11,22 @@ export default {
           "border": "#949494",
         },
         "gray": {
-          "primary": "#373F51"
+          "primary": "#373F51",
+          "light": "#D9D9D9"
         }
       }
     },
   },
   plugins: [],
+  safelist: [
+    "bg-white",
+    "bg-light-blue",
+    "text-light-blue",
+    "bg-input-background",
+    "text-input-text",
+    "border-input-border",
+    "bg-gray-primary",
+    "text-gray-primary",
+    "bg-gray-light",
+  ]
 };
