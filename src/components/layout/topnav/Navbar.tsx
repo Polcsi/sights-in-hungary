@@ -3,6 +3,8 @@ import Logo from "../../Logo";
 import { NavLink, Link } from "react-router-dom";
 import ProfileMenu from "./ProfileMenu";
 import { useAuthContext } from "../../../features/auth/AuthContext";
+import Lottie from "react-lottie";
+import addAnimation from "../../../assets/lotties/add_animation.json";
 
 interface INavbarProps {
     hideLinks?: boolean;
@@ -58,55 +60,85 @@ const Navbar = ({ hideLinks }: INavbarProps) => {
                 </section>
                 <section className="flex items-center">
                     {!hideLinks ? (
-                        <menu className="flex gap-10 items-center font-medium">
+                        <menu className="flex gap-4 items-center font-medium">
                             <li>
-                                <NavLink
-                                    className={({ isActive }) => {
-                                        return isActive ? "active-link" : "";
-                                    }}
-                                    to="/sights"
-                                >
-                                    Látnivalók
-                                </NavLink>
-                            </li>
-                            <li>
-                                <NavLink
-                                    className={({ isActive }) => {
-                                        return isActive ? "active-link" : "";
-                                    }}
-                                    to="/contact"
-                                >
-                                    Kapcsolat
-                                </NavLink>
-                            </li>
-                            {currentUser ? (
-                                <React.Fragment>
+                                <menu className="flex gap-10">
                                     <li>
                                         <NavLink
                                             className={({ isActive }) => {
                                                 return isActive ? "active-link" : "";
                                             }}
-                                            to="/dashboard"
+                                            to="/sights"
                                         >
-                                            Dashboard
+                                            Látnivalók
                                         </NavLink>
                                     </li>
                                     <li>
-                                        <ProfileMenu />
+                                        <NavLink
+                                            className={({ isActive }) => {
+                                                return isActive ? "active-link" : "";
+                                            }}
+                                            to="/contact"
+                                        >
+                                            Kapcsolat
+                                        </NavLink>
+                                    </li>
+                                    {currentUser ? (
+                                        <li>
+                                            <NavLink
+                                                className={({ isActive }) => {
+                                                    return isActive ? "active-link" : "";
+                                                }}
+                                                to="/dashboard"
+                                            >
+                                                Dashboard
+                                            </NavLink>
+                                        </li>
+                                    ) : (
+                                        <React.Fragment>
+                                            <li>
+                                                <NavLink
+                                                    className={({ isActive }) => {
+                                                        return isActive ? "active-link" : "";
+                                                    }}
+                                                    to="/login"
+                                                >
+                                                    Bejelentkezés
+                                                </NavLink>
+                                            </li>
+                                        </React.Fragment>
+                                    )}
+                                </menu>
+                            </li>
+                            {currentUser ? (
+                                <React.Fragment>
+                                    <li>
+                                        <div className="w-[2px] h-[30px] bg-gray-primary" />
+                                    </li>
+                                    <li>
+                                        <menu className="flex gap-1">
+                                            <li>
+                                                <Link to="/add-sight">
+                                                    <Lottie
+                                                        height={40}
+                                                        width={40}
+                                                        options={{
+                                                            animationData: addAnimation,
+                                                            rendererSettings: {
+                                                                preserveAspectRatio: "xMidYMid slice",
+                                                                progressiveLoad: true,
+                                                            },
+                                                        }}
+                                                    />
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <ProfileMenu />
+                                            </li>
+                                        </menu>
                                     </li>
                                 </React.Fragment>
-                            ) : (
-                                <li>
-                                    <NavLink
-                                        className={({ isActive }) => {
-                                            return isActive ? "active-link" : "";
-                                        }}
-                                        to="/login"
-                                    >
-                                        Bejelentkezés
-                                    </NavLink>
-                                </li>
-                            )}
+                            ) : null}
                         </menu>
                     ) : null}
                 </section>

@@ -9,6 +9,7 @@ const Login = lazy(() => import("./features/auth/login/Login"));
 const Register = lazy(() => import("./features/auth/register/Register"));
 const Contact = lazy(() => import("./pages/contact/Contact"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
+const Me = lazy(() => import("./pages/me/Me"));
 
 export type IRouteProps = RouteProps & {
     onlyLogo?: boolean;
@@ -55,5 +56,9 @@ export const privateRoutes: RouteObject[] = [
     {
         path: "dashboard",
         element: <Dashboard />,
+    },
+    {
+        path: "me",
+        element: <Me />,
     },
 ];

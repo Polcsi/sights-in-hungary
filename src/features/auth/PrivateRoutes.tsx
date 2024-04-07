@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import React, { Suspense } from "react";
 import { Navigate, Outlet, ScrollRestoration, useLocation } from "react-router-dom";
 
 import { Navbar } from "../../components";
@@ -14,11 +14,13 @@ const PrivateRoutes = () => {
 
     if (currentUser) {
         return (
-            <Suspense fallback={<>Loading...</>}>
+            <React.Fragment>
                 <Navbar />
-                <Outlet />
-                <ScrollRestoration />
-            </Suspense>
+                <Suspense fallback={<>Loading...</>}>
+                    <Outlet />
+                    <ScrollRestoration />
+                </Suspense>
+            </React.Fragment>
         );
     } else {
         return <Navigate to="/" state={{ from: location }} replace />;

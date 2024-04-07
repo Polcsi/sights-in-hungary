@@ -12,6 +12,7 @@ import { getAuth, signOut } from "firebase/auth";
 import app from "../../../firebase";
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../../features/auth/AuthContext";
+import { Link } from "react-router-dom";
 
 export interface ProfileMenuProps {}
 
@@ -105,7 +106,7 @@ const ProfileMenu = ({}: ProfileMenuProps) => {
                 transformOrigin={{ horizontal: "right", vertical: "top" }}
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
-                <MenuItem onClick={handleClose} disabled>
+                <MenuItem component={Link} to="/me" onClick={handleClose}>
                     <Avatar src={currentUser?.photoURL ? currentUser?.photoURL : ""} /> Profil Adatok
                 </MenuItem>
                 <Divider />
