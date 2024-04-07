@@ -61,7 +61,7 @@ const BasicInputField = (props: IBasicInputFieldProps) => {
                     innerRef={inputRef}
                     type={props.type === "password" ? (showPassword ? "text" : "password") : props.type}
                     className={twMerge(
-                        `bg-input-background text-input-text rounded-md w-full outline-none focus-visible:ring-4 focus-visible:ring-blue-500 py-3 px-3 hover:ring-2 hover:ring-blue-500 transition-all duration-200 ease-in-out ring-1 ring-input-border ${icon ? "pl-10" : ""}`,
+                        `bg-input-background text-input-text rounded-md w-full outline-none focus-visible:ring-4 focus-visible:ring-blue-500 py-3 px-3 hover:ring-2 hover:ring-blue-500 transition-all duration-200 ease-in-out ring-1 ring-input-border ${icon ? "pl-10" : ""} disabled:opacity-70 disabled:cursor-not-allowed`,
                         className
                     )}
                 />

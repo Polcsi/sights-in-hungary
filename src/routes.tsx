@@ -8,6 +8,7 @@ const Sights = lazy(() => import("./pages/sights/Sights"));
 const Login = lazy(() => import("./features/auth/login/Login"));
 const Register = lazy(() => import("./features/auth/register/Register"));
 const Contact = lazy(() => import("./pages/contact/Contact"));
+const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 
 export type IRouteProps = RouteProps & {
     onlyLogo?: boolean;
@@ -34,6 +35,13 @@ export const publicRoutes: RouteObject[] = [
 
 export const publicRoutesWithoutNavLinks: RouteObject[] = [
     {
+        path: "*",
+        element: <NotFound />,
+    },
+];
+
+export const publicRoutesWithRedirect: RouteObject[] = [
+    {
         path: "login",
         element: <Login />,
     },
@@ -41,15 +49,11 @@ export const publicRoutesWithoutNavLinks: RouteObject[] = [
         path: "register",
         element: <Register />,
     },
-    {
-        path: "*",
-        element: <NotFound />,
-    },
 ];
 
 export const privateRoutes: RouteObject[] = [
     {
         path: "dashboard",
-        element: <div>Dashboard</div>,
+        element: <Dashboard />,
     },
 ];

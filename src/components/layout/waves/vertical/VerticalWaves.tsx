@@ -14,8 +14,8 @@ const VerticalWaves = ({ content1, content2 }: IVerticalWavesProps) => {
                 <div className="absolute top-[50%] left-[100%] translate-x-[-100%] translate-y-[-50%] w-[90%]">
                     {content2}
                 </div>
-                <img className="h-screen" src={vertical} alt="wave" />
-                <div className="bg-light-blue w-[400px] 2xl:w-[500px] h-screen"></div>
+                <img className="h-screen relative -right-[1px] -z-[1]" src={vertical} alt="wave" />
+                <div className="bg-light-blue w-[400px] 2xl:w-[500px] h-screen" />
             </section>
         </div>
     );

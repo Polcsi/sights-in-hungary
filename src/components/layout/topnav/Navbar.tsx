@@ -1,6 +1,8 @@
 import React from "react";
 import Logo from "../../Logo";
 import { NavLink, Link } from "react-router-dom";
+import ProfileMenu from "./ProfileMenu";
+import { useAuthContext } from "../../../features/auth/AuthContext";
 
 interface INavbarProps {
     hideLinks?: boolean;
@@ -8,6 +10,8 @@ interface INavbarProps {
 
 const Navbar = ({ hideLinks }: INavbarProps) => {
     const navRef = React.useRef<HTMLDivElement>(null);
+
+    const { currentUser } = useAuthContext();
 
     React.useEffect(() => {
         if (navRef.current) {
@@ -75,16 +79,34 @@ const Navbar = ({ hideLinks }: INavbarProps) => {
                                     Kapcsolat
                                 </NavLink>
                             </li>
-                            <li>
-                                <NavLink
-                                    className={({ isActive }) => {
-                                        return isActive ? "active-link" : "";
-                                    }}
-                                    to="/login"
-                                >
-                                    Bejelentkezés
-                                </NavLink>
-                            </li>
+                            {currentUser ? (
+                                <React.Fragment>
+                                    <li>
+                                        <NavLink
+                                            className={({ isActive }) => {
+                                                return isActive ? "active-link" : "";
+                                            }}
+                                            to="/dashboard"
+                                        >
+                                            Dashboard
+                                        </NavLink>
+                                    </li>
+                                    <li>
+                                        <ProfileMenu />
+                                    </li>
+                                </React.Fragment>
+                            ) : (
+                                <li>
+                                    <NavLink
+                                        className={({ isActive }) => {
+                                            return isActive ? "active-link" : "";
+                                        }}
+                                        to="/login"
+                                    >
+                                        Bejelentkezés
+                                    </NavLink>
+                                </li>
+                            )}
                         </menu>
                     ) : null}
                 </section>
