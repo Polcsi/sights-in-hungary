@@ -66,9 +66,7 @@ const SightsList = () => {
                 </div>
             </div>
             <div className="py-10 flex flex-wrap gap-10 justify-center w-[var(--page-content-min-width)] max-w-[var(--page-content-max-width)] self-center">
-                {data.map((sight) => (
-                    <SightCard key={sight.id} {...sight} />
-                ))}
+                {data?.map((sight) => <SightCard key={sight.id} {...sight} />)}
             </div>
         </section>
     );

@@ -91,7 +91,7 @@ const Navbar = ({ hideLinks }: INavbarProps) => {
                                                 }}
                                                 to="/dashboard"
                                             >
-                                                Dashboard
+                                                Irányitópult
                                             </NavLink>
                                         </li>
                                     ) : (
