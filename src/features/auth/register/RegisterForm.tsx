@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 interface IRegister {
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
     passwordConfirm: string;
@@ -22,8 +24,14 @@ const RegisterForm = () => {
         const { setFieldError, setSubmitting } = helpers;
 
         createUserWithEmailAndPassword(auth, values.email, values.password)
-            .then((_userCredential) => {
+            .then((userCredential) => {
                 // Signed up
+                console.log(userCredential);
+                // Update user profile
+                userCredential.user.updateProfile({
+                    displayName: `${values.firstName} ${values.lastName}`,
+                });
+
                 setSubmitting(false);
                 toast.success("Sikeres regisztráció");
                 navigate("/login");
@@ -52,9 +60,11 @@ const RegisterForm = () => {
         <section className="flex flex-col gap-7">
             <RegisterFormHeader />
             <Formik<IRegister>
-                initialValues={{ email: "", password: "", passwordConfirm: "" }}
+                initialValues={{ firstName: "", lastName: "", email: "", password: "", passwordConfirm: "" }}
                 onSubmit={handleRegister}
                 validationSchema={Yup.object().shape({
+                    firstName: Yup.string().required("Keresztnév megadása kötelező"),
+                    lastName: Yup.string().required("Vezetéknév megadása kötelező"),
                     email: Yup.string().email("Nem megfelelő email formátum").required("Kötelező mező"),
                     password: Yup.string()
                         .min(6, "A jelszónak legalább 6 karakternek kell lennie")
@@ -66,6 +76,20 @@ const RegisterForm = () => {
                     return (
                         <Form className="mx-auto">
                             <div className="grid gap-4">
+                                <BasicInputField
+                                    required
+                                    title="Keresztnév"
+                                    name="firstName"
+                                    placeholder="Keresztnév"
+                                    disabled={isSubmitting}
+                                />
+                                <BasicInputField
+                                    required
+                                    title="Vezetéknév"
+                                    name="lastName"
+                                    placeholder="Vezetéknév"
+                                    disabled={isSubmitting}
+                                />
                                 <BasicInputField
                                     required
                                     title="Email"
