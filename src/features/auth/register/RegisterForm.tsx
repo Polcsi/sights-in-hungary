@@ -3,7 +3,7 @@ import BasicInputField from "../../../components/BasicInputField";
 import Button from "../../../components/Button";
 import RegisterFormHeader from "./RegisterFormHeader";
 import * as Yup from "yup";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth";
 import app from "../../../firebase";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
@@ -24,11 +24,9 @@ const RegisterForm = () => {
         const { setFieldError, setSubmitting } = helpers;
 
         createUserWithEmailAndPassword(auth, values.email, values.password)
-            .then((userCredential) => {
-                // Signed up
-                console.log(userCredential);
+            .then(function (userCredential) {
                 // Update user profile
-                userCredential.user.updateProfile({
+                updateProfile(userCredential.user, {
                     displayName: `${values.firstName} ${values.lastName}`,
                 });
 
