@@ -13,10 +13,9 @@ import app from "../../../firebase";
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../../features/auth/AuthContext";
 import { Link } from "react-router-dom";
+import { FaUser } from "react-icons/fa6";
 
-export interface ProfileMenuProps {}
-
-const ProfileMenu = ({}: ProfileMenuProps) => {
+const ProfileMenu = () => {
     const auth = getAuth(app);
 
     const { currentUser } = useAuthContext();
@@ -68,7 +67,12 @@ const ProfileMenu = ({}: ProfileMenuProps) => {
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                 >
-                    <Avatar src={currentUser?.photoURL ? currentUser?.photoURL : ""} sx={{ width: 32, height: 32 }} />
+                    <Avatar
+                        src={currentUser?.photoURL ?? ""}
+                        sx={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center" }}
+                    >
+                        {currentUser?.photoURL ? null : <FaUser className="size-[16px]" />}
+                    </Avatar>
                 </IconButton>
             </Box>
             <Menu
@@ -107,7 +111,13 @@ const ProfileMenu = ({}: ProfileMenuProps) => {
                 anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
             >
                 <MenuItem component={Link} to="/me" onClick={handleClose}>
-                    <Avatar src={currentUser?.photoURL ? currentUser?.photoURL : ""} /> Profil Adatok
+                    <Avatar
+                        src={currentUser?.photoURL ?? ""}
+                        sx={{ width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center" }}
+                    >
+                        {currentUser?.photoURL ? null : <FaUser className="size-[16px]" />}
+                    </Avatar>{" "}
+                    {currentUser?.displayName ?? "Profil Adatok"}
                 </MenuItem>
                 <Divider />
                 <MenuItem onClick={handleClose} disabled>

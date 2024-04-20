@@ -24,7 +24,7 @@ const LoginForm = () => {
         setPersistence(auth, browserSessionPersistence)
             .then(async () => {
                 return signInWithEmailAndPassword(auth, email, password)
-                    .then((_userCredential) => {
+                    .then(() => {
                         // Signed in
                         setSubmitting(false);
                         toast.success("Sikeres bejelentkezés");

@@ -13,6 +13,9 @@ export default {
         "gray": {
           "primary": "#373F51",
           "light": "#D9D9D9"
+        },
+        "green": {
+          "primary": "#1cc987"
         }
       }
     },

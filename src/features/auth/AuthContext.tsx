@@ -6,9 +6,7 @@ type ProviderParams = {
     children?: ReactElement[] | ReactElement | undefined;
 };
 
-type AuthContextType = {};
-
-const useContextFunc = ({}: AuthContextType) => {
+const useContextFunc = () => {
     const auth = getAuth(app);
 
     const [currentUser, setCurrentUser] = React.useState<User | null>(null);
@@ -16,6 +14,7 @@ const useContextFunc = ({}: AuthContextType) => {
 
     React.useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
+            console.log("%c USER CHANGED", "color: red;", user);
             setCurrentUser(user);
             setIsLoading(false);
         });
@@ -23,20 +22,21 @@ const useContextFunc = ({}: AuthContextType) => {
         return unsubscribe;
     });
 
-    return { currentUser, isLoading };
+    return { currentUser, setCurrentUser, isLoading };
 };
 
 type UseAuthContextType = ReturnType<typeof useContextFunc>;
 
 const initContextState: UseAuthContextType = {
     currentUser: null,
+    setCurrentUser: () => {},
     isLoading: true,
 };
 
 const AuthContext = createContext<UseAuthContextType>(initContextState);
 
-const AuthContextProvider = ({ children }: ProviderParams & AuthContextType) => {
-    return <AuthContext.Provider value={useContextFunc({})}>{children}</AuthContext.Provider>;
+const AuthContextProvider = ({ children }: ProviderParams) => {
+    return <AuthContext.Provider value={useContextFunc()}>{children}</AuthContext.Provider>;
 };
 
 export const useAuthContext = () => {
