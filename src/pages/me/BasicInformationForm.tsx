@@ -13,7 +13,7 @@ interface IBasicInformation {
 
 // TODO: After first name and last name are updated, the name should be updated on the UI as well
 const BasicInformationForm = () => {
-    const { currentUser } = useAuthContext();
+    const { currentUser, setIsAuthUpdated } = useAuthContext();
     const names: string[] = currentUser?.displayName?.split(" ") ?? [];
     const lastName: string = names.at(-1) ?? "";
     const firstName: string = names.slice(0, -1).join(" ");
@@ -32,6 +32,8 @@ const BasicInformationForm = () => {
                 });
 
                 await currentUser.reload();
+
+                setIsAuthUpdated((prev) => !prev);
 
                 toast.success("Sikeres módosítás");
             }

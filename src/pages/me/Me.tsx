@@ -3,31 +3,20 @@ import Transition from "../../components/layout/Transition";
 import { useAuthContext } from "../../features/auth/AuthContext";
 import wave from "./wave.svg";
 import google from "../../assets/icons/google.svg";
-import { FaUser } from "react-icons/fa6";
 import PasswordForm from "./PasswordForm";
 import BasicInformationForm from "./BasicInformationForm";
+import ProfileImage from "./ProfileImage";
+import DeleteUserSection from "./DeleteUserSection";
 
 const Me = () => {
-    const { currentUser } = useAuthContext();
-    console.log(currentUser);
-    const isGoogle: boolean = currentUser?.providerData[0]?.providerId === "google.com";
+    const { currentUser, isGoogle } = useAuthContext();
 
     return (
         <main className="w-screen flex justify-center flex-col relative">
             <div className="PageContent self-center w-[var(--page-content-min-width)] max-w-[var(--page-content-max-width)] pt-[95px] flex flex-col gap-5">
                 <section className="flex justify-center">
                     <header className="flex flex-col justify-center gap-3">
-                        <div className="size-36 rounded-full bg-gray-light flex justify-center items-center self-center">
-                            {currentUser?.photoURL ? (
-                                <img
-                                    className="rounded-full size-32"
-                                    src={currentUser?.photoURL ?? ""}
-                                    alt="profile-img"
-                                />
-                            ) : (
-                                <FaUser className="text-white size-24" />
-                            )}
-                        </div>
+                        <ProfileImage />
                         <div className="flex flex-col gap-1">
                             <h1 className="text-center text-[50px] font-bold">{currentUser?.displayName}</h1>
                             <div className="flex flex-col gap-3">
@@ -53,7 +42,12 @@ const Me = () => {
                 </section>
                 {!isGoogle ? (
                     <div className="flex flex-wrap self-center gap-5 justify-center">
-                        <section className="flex justify-center relative px-5 py-3 w-[600px]">
+                        <section
+                            className="flex justify-center relative px-5 py-3"
+                            style={{
+                                width: "calc(calc(var(--page-content-max-width) / 2) - 10px)",
+                            }}
+                        >
                             <div className="absolute top-0 left-0 w-full h-full -z-[1] bg-[rgba(255,255,255,0.8)] rounded-lg ring-[0_4px_30px_rgba(0,0,0,0.2)] backdrop-blur-[6.4px] border-[2px] border-[rgba(0,0,0,0.1)]" />
                             <div className="self-start w-full flex flex-col gap-5">
                                 <div className="flex flex-col gap-2">
@@ -65,7 +59,12 @@ const Me = () => {
                                 <BasicInformationForm />
                             </div>
                         </section>
-                        <section className="flex justify-center relative px-5 py-3 w-[600px]">
+                        <section
+                            className="flex justify-center relative px-5 py-3"
+                            style={{
+                                width: "calc(calc(var(--page-content-max-width) / 2) - 10px)",
+                            }}
+                        >
                             <div className="absolute top-0 left-0 w-full h-full -z-[1] bg-[rgba(255,255,255,0.8)] rounded-lg ring-[0_4px_30px_rgba(0,0,0,0.2)] backdrop-blur-[6.4px] border-[2px] border-[rgba(0,0,0,0.1)]" />
                             <div className="self-start w-full flex flex-col gap-5">
                                 <div className="flex flex-col gap-2">
@@ -79,6 +78,7 @@ const Me = () => {
                         </section>
                     </div>
                 ) : null}
+                <DeleteUserSection />
             </div>
             <img className="absolute top-[25vh] left-0 -z-[2]" src={wave} alt="wave" />
         </main>
