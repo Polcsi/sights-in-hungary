@@ -3,6 +3,13 @@ import BasicInputField from "../../../components/BasicInputField";
 import Button from "../../../components/Button";
 import InputFileUpload from "../../../components/InputFileUpload";
 import * as Yup from "yup";
+import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
+import { getDatabase, ref as databaseRef, set } from "firebase/database";
+import app from "../../../firebase";
+import { v4 as uuidv4 } from "uuid";
+import { toast } from "react-toastify";
+import { useAuthContext } from "../../../features/auth/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface ISightCreation {
     name: string;
@@ -13,18 +20,57 @@ interface ISightCreation {
 }
 
 const CreationForm = () => {
-    const handleSubmit = (values: ISightCreation, helpers: FormikHelpers<ISightCreation>) => {
-        const { setSubmitting } = helpers;
+    const storage = getStorage(app);
+    const db = getDatabase(app);
+    const { currentUser } = useAuthContext();
+    const navigate = useNavigate();
+
+    const handleSubmit = async (values: ISightCreation, helpers: FormikHelpers<ISightCreation>) => {
+        const { setSubmitting, resetForm } = helpers;
 
         try {
             console.table(values);
-            // ? Send the data to the server
+            // ? Upload image to storage
+            const imageId = uuidv4();
+
+            const imageRef = storageRef(
+                storage,
+                `sights/${imageId}/${values.name.toLocaleLowerCase().trim().replace(/\s/g, "-")}-image`
+            );
+
+            await uploadBytes(imageRef, values.coverImg[0], {
+                customMetadata: {
+                    location: values.location,
+                    name: values.name,
+                },
+            });
+
+            const imgUrl = await getDownloadURL(imageRef);
+            console.log(imgUrl);
+            // ? Set new sight to database
+            const sightId = uuidv4();
+            const sightRef = databaseRef(db, `sights/${sightId}`);
+            const currentDate = new Date().toISOString();
+
+            await set(sightRef, {
+                name: values.name,
+                location: values.location,
+                description: values.description,
+                photoUrl: imgUrl,
+                photoId: imageId,
+                userId: currentUser?.uid,
+                createdAt: currentDate,
+                updatedAt: currentDate,
+            });
+
+            resetForm();
+            toast.success("Látványosság sikeresen hozzáadva!");
+            navigate("/sights");
         } catch (error) {
             console.error(error);
+            toast.error("Hiba történt a látványosság hozzáadása során");
         } finally {
-            setTimeout(() => {
-                setSubmitting(false);
-            }, 2000);
+            setSubmitting(false);
         }
     };
 
@@ -52,7 +98,7 @@ const CreationForm = () => {
                             <h1 className="font-semibold text-3xl">Látványoság hozzáadása</h1>
                             <hr className="border-gray-primary" />
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-col gap-3">
                             <div className="grid grid-cols-2 gap-4 w-full">
                                 <BasicInputField
                                     name="name"
@@ -81,17 +127,18 @@ const CreationForm = () => {
                             <div className="self-start">
                                 <InputFileUpload name="coverImg" label="Upload Image" />
                             </div>
-
-                            <hr className="border-gray-light" />
-                            {/* // ? Submit button */}
-                            <Button
-                                isProcessing={isSubmitting}
-                                disabled={!isValid}
-                                type="submit"
-                                className="bg-green-primary text-white py-2 rounded-lg self-end"
-                            >
-                                Hozzáadás
-                            </Button>
+                            <div className="flex flex-col gap-4 mt-1">
+                                <hr className="border-gray-light" />
+                                {/* // ? Submit button */}
+                                <Button
+                                    isProcessing={isSubmitting}
+                                    disabled={!isValid}
+                                    type="submit"
+                                    className="bg-green-primary text-white py-2 rounded-lg self-end"
+                                >
+                                    Hozzáadás
+                                </Button>
+                            </div>
                         </div>
                     </Form>
                 );

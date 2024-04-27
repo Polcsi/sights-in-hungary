@@ -96,14 +96,14 @@ const InputFileUpload = (props: IInputFileUpload) => {
                     </Button>
                 </div>
                 <div
-                    className={`Preview-Image border-input-border border-2 rounded-lg flex justify-center items-center min-h-[300px] ${file ? "group" : ""} relative `}
+                    className={`Preview-Image ${error ? "border-red-400 text-red-500" : "border-input-border text-gray-500"} border-[1px] rounded-lg flex justify-center items-center min-h-[300px] ${file ? "group" : ""} relative `}
                 >
                     {file ? (
                         <img className="min-h-[300px] rounded-md" src={file} alt="selected-img" />
                     ) : (
                         <div>
-                            <CiImageOn className="size-[100px] text-gray-500" />
-                            <p className="text-gray-500">Kép előnézet</p>
+                            <CiImageOn className="size-[100px] " />
+                            <p className="">Kép előnézet</p>
                         </div>
                     )}
                     {/* // Overlay for the delete button */}

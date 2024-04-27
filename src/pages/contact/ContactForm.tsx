@@ -21,8 +21,6 @@ interface IConctactForm {
 
 const ContactForm = () => {
     const handleSubmit = async (values: IConctactForm, helpers: FormikHelpers<IConctactForm>) => {
-        console.log("SUBMIT");
-
         try {
             const db = getDatabase(app);
 
@@ -35,7 +33,6 @@ const ContactForm = () => {
 
             toast.success("Az üzenetet sikeresen elküldtük!");
         } catch (error) {
-            console.log(error);
             console.error(error);
             toast.error("Hiba történt az üzenet elküldése közben!");
         } finally {
