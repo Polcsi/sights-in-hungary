@@ -3,8 +3,9 @@ import { Field, FieldProps, useField } from "formik";
 import { twMerge } from "tailwind-merge";
 import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 import { AnimatePresence, motion } from "framer-motion";
+import { v4 as uuidv4 } from "uuid";
 
-const fadeInOut = {
+export const fadeInOut = {
     initial: { opacity: 0, display: "none", height: 0 },
     in: {
         display: "flex",
@@ -20,7 +21,7 @@ const fadeInOut = {
     },
 };
 
-type IBasicInputFieldProps = Partial<FieldProps> & (IInput | ITextArea);
+type IBasicInputFieldProps = Partial<FieldProps> & { label?: React.ReactNode } & (IInput | ITextArea);
 
 interface IInput extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "form"> {
     name: string;
@@ -36,16 +37,18 @@ interface ITextArea extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElemen
 }
 
 const BasicInputField = (props: IBasicInputFieldProps) => {
+    const { label, ...otherProps } = props;
     const [_, meta] = useField(props.name);
     const [showPassword, setShowPassword] = React.useState<boolean>(false);
     const { className, icon } = props;
     const inputRef = React.useRef<HTMLInputElement>(null);
+    const uniqueId = React.useMemo(() => uuidv4(), []);
 
     const { error, touched } = meta;
 
     return (
         <div className="grid gap-1">
-            <div className="relative">
+            <div className="relative flex flex-col gap-1">
                 {icon ? (
                     <div
                         onClick={() => {
@@ -56,9 +59,11 @@ const BasicInputField = (props: IBasicInputFieldProps) => {
                         {icon}
                     </div>
                 ) : null}
+                {label ? <label htmlFor={otherProps.id ? otherProps.id : uniqueId}>{label}</label> : null}
                 <Field
-                    {...props}
+                    {...otherProps}
                     innerRef={inputRef}
+                    id={otherProps.id ? otherProps.id : uniqueId}
                     type={props.type === "password" ? (showPassword ? "text" : "password") : props.type}
                     className={twMerge(
                         `bg-input-background text-input-text rounded-md w-full outline-none focus-visible:ring-4 focus-visible:ring-blue-500 py-3 px-3 hover:ring-2 hover:ring-blue-500 transition-all duration-200 ease-in-out ring-1 ring-input-border ${icon ? "pl-10" : ""} disabled:opacity-70 disabled:cursor-not-allowed`,

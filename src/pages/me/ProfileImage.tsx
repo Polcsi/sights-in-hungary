@@ -51,7 +51,7 @@ const ProfileImage = () => {
             >
                 <div className="size-36 rounded-full bg-gray-light flex justify-center items-center self-center">
                     {currentUser?.photoURL ? (
-                        <img className="rounded-full size-32" src={currentUser?.photoURL ?? ""} alt="profile-img" />
+                        <img className="rounded-full size-32" src={currentUser?.photoURL} alt="profile-img" />
                     ) : (
                         <FaUser className="text-white size-24" />
                     )}

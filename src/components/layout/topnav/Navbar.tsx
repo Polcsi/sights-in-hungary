@@ -23,7 +23,7 @@ const Navbar = ({ hideLinks }: INavbarProps) => {
         }
         const handleScroll = () => {
             if (navRef.current) {
-                if (window.scrollY > 100) {
+                if (window.scrollY > 50) {
                     navRef.current.style.backgroundColor = "white";
                     navRef.current.style.boxShadow = "0 0 10px rgba(0, 0, 0, 0.1)";
                     navRef.current.style.paddingTop = "0";
@@ -118,7 +118,7 @@ const Navbar = ({ hideLinks }: INavbarProps) => {
                                     <li>
                                         <menu className="flex gap-1">
                                             <li>
-                                                <Link to="/add-sight">
+                                                <Link to="/sights/create">
                                                     <Lottie
                                                         height={40}
                                                         width={40}
