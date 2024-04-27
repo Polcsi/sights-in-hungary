@@ -7,14 +7,20 @@ export interface ISight {
     id: number;
     name: string;
     description: string;
-    rating: number;
-    image: string;
+    rating?: number;
+    photoUrl: string;
+    photoId: string;
     location: string;
     tags: string[];
-    likes: number;
+    likes?: number;
+    createdAt: string;
+    updatedAt: string;
+    userId: string;
 }
 
 const SightCard = (props: ISight) => {
+    // destructuring the props
+    const { id, name, description, rating = 4.5, photoUrl, location, likes = 1000 } = props;
     const [isLiked, setIsLiked] = React.useState<boolean>(false);
 
     return (
@@ -26,8 +32,8 @@ const SightCard = (props: ISight) => {
         >
             <div className="relative select-none">
                 <img
-                    src={props.image}
-                    alt={`${props.name}-${props.location}`}
+                    src={photoUrl}
+                    alt={`${name}-${location}`}
                     style={{
                         borderRadius: "15px 15px 0px 0px",
                         aspectRatio: "16/9",
@@ -43,7 +49,7 @@ const SightCard = (props: ISight) => {
                     className="Overlay absolute top-0 left-0 w-full h-full"
                 />
                 <h2 className="text-white font-extrabold text-[48px] absolute bottom-2 left-5">
-                    {props.name} - {props.location}
+                    {name} - {location}
                 </h2>
             </div>
             <div className="p-5 grid justify-stretch gap-2 select-none">
@@ -53,23 +59,23 @@ const SightCard = (props: ISight) => {
                         lineHeight: "2",
                     }}
                 >
-                    {props.description}
+                    {description}
                 </p>
                 <div className="flex gap-1 items-center">
-                    <CustomRating value={props.rating} readOnly />
-                    <p className="text-lg">{props.rating}</p>
+                    <CustomRating value={rating} readOnly />
+                    <p className="text-lg">{rating}</p>
                 </div>
                 <div className="flex justify-between items-center">
                     <Button
                         linkProps={{
                             className: "bg-light-blue text-white py-1 px-6",
-                            href: `/sights/${props.id}`,
+                            href: `/sights/${id}`,
                         }}
                     >
                         Megnézem
                     </Button>
                     <div className="flex items-center gap-1 select-none">
-                        <p>{props.likes}</p>
+                        <p>{likes}</p>
                         <Button
                             className="px-0 py-0 bg-transparent"
                             onClick={() => {

@@ -36,6 +36,7 @@ const InputFileUpload = (props: IInputFileUpload) => {
                         onClick={() => {
                             setTouched(true);
                         }}
+                        title={props.title ?? ""}
                         className="w-full h-full flex flex-col justify-center items-center"
                         component="label"
                         role={undefined}
@@ -96,7 +97,7 @@ const InputFileUpload = (props: IInputFileUpload) => {
                     </Button>
                 </div>
                 <div
-                    className={`Preview-Image ${error ? "border-red-400 text-red-500" : "border-input-border text-gray-500"} border-[1px] rounded-lg flex justify-center items-center min-h-[300px] ${file ? "group" : ""} relative `}
+                    className={`Preview-Image ${error && touched ? "border-red-400 text-red-500" : "border-input-border text-gray-500"} border-[1px] rounded-lg flex justify-center items-center min-h-[300px] ${file ? "group" : ""} relative `}
                 >
                     {file ? (
                         <img className="min-h-[300px] rounded-md" src={file} alt="selected-img" />

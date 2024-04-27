@@ -65,7 +65,7 @@ const CreationForm = () => {
 
             resetForm();
             toast.success("Látványosság sikeresen hozzáadva!");
-            navigate("/sights");
+            navigate("/sights#list");
         } catch (error) {
             console.error(error);
             toast.error("Hiba történt a látványosság hozzáadása során");
@@ -88,7 +88,9 @@ const CreationForm = () => {
                 name: Yup.string().required("A látványoság neve kötelező!"),
                 location: Yup.string().required("A település neve kötelező!"),
                 description: Yup.string().required("A leírás kötelező!"),
-                coverImg: Yup.array().required("A borítókép kötelező!").min(1, "A borítókép kötelező!"),
+                coverImg: Yup.array()
+                    .required("Borítókép feltöltése kötelező!")
+                    .min(1, "Borítókép feltöltése kötelező!"),
             })}
         >
             {({ isSubmitting, isValid }) => {
@@ -125,7 +127,12 @@ const CreationForm = () => {
                                 title="Leírás"
                             />
                             <div className="self-start">
-                                <InputFileUpload name="coverImg" label="Upload Image" />
+                                <InputFileUpload
+                                    name="coverImg"
+                                    label="Kép feltöltése"
+                                    required
+                                    title="Borítókép feltöltése"
+                                />
                             </div>
                             <div className="flex flex-col gap-4 mt-1">
                                 <hr className="border-gray-light" />
@@ -134,7 +141,7 @@ const CreationForm = () => {
                                     isProcessing={isSubmitting}
                                     disabled={!isValid}
                                     type="submit"
-                                    className="bg-green-primary text-white py-2 rounded-lg self-end"
+                                    className={`bg-green-primary text-white rounded-lg self-end ${isSubmitting ? "py-0" : "py-3"} px-5`}
                                 >
                                     Hozzáadás
                                 </Button>
