@@ -65,6 +65,7 @@ const Navbar = ({ hideLinks }: INavbarProps) => {
                                 <menu className="flex gap-10">
                                     <li>
                                         <NavLink
+                                            end
                                             className={({ isActive }) => {
                                                 return isActive ? "active-link" : "";
                                             }}
