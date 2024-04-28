@@ -1,7 +1,7 @@
 import React from "react";
 import Button from "../../components/Button";
-import app from "../../firebase";
 import SightCard, { type ISight } from "./SightCard";
+import app from "../../firebase";
 import { getDatabase, ref, onValue } from "firebase/database";
 
 const SightsList = () => {
@@ -13,7 +13,7 @@ const SightsList = () => {
         onValue(sightsRef, (snapshot) => {
             // ? Convert object to array. Object keys are sight ids.
             const data = snapshot.val();
-            const sights = Object.keys(data).map((key) => ({ ...data[key], id: key }));
+            const sights = data ? Object?.keys(data)?.map((key) => ({ ...data[key], id: key })) : [];
             setSightsData(sights);
         });
     }, []);
@@ -28,7 +28,11 @@ const SightsList = () => {
                 </div>
             </div>
             <div className="py-10 flex flex-wrap gap-10 justify-center w-[var(--page-content-min-width)] max-w-[var(--page-content-max-width)] self-center">
-                {sightsData?.map((sight) => <SightCard key={sight.id} {...sight} />)}
+                {Array.isArray(sightsData) && sightsData?.length > 0 ? (
+                    sightsData?.map((sight) => <SightCard key={sight.id} {...sight} />)
+                ) : (
+                    <p>Nem található látnivaló!</p>
+                )}
             </div>
         </section>
     );

@@ -16,6 +16,10 @@ export interface ISight {
     createdAt: string;
     updatedAt: string;
     userId: string;
+    coordinates: {
+        lat: number;
+        lng: number;
+    };
 }
 
 const SightCard = (props: ISight) => {

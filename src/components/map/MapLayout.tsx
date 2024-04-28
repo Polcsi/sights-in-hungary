@@ -1,4 +1,11 @@
-import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
+import React from "react";
+import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import SelectLocationMarker from "./SelectLocationMarker";
+import { twMerge } from "tailwind-merge";
+import app from "../../firebase";
+import { getDatabase, ref, onValue } from "firebase/database";
+import type { ISight } from "../../pages/sights/SightCard";
+import LocationMarker from "./LocationMarker";
 
 const HUNGARY_BOUNDS = {
     north: 48.62096405029297,
@@ -8,11 +15,56 @@ const HUNGARY_BOUNDS = {
 };
 const CENTER_OF_HUNGARY = { lat: 47.2669677734375, lng: 19.50330352783203 } as const;
 
-const MapLayout = () => {
+interface IMapLayoutBase {
+    className?: string;
+}
+
+export interface IMapLayoutSelect extends IMapLayoutBase {
+    isSelect: true;
+    markerChangedFunc: (lat: number, lng: number) => void;
+}
+
+interface IMapLayoutNoSelect extends IMapLayoutBase {
+    isSelect?: false;
+    markerChangedFunc?: never;
+}
+
+type IMapLayoutProps = IMapLayoutNoSelect | IMapLayoutSelect;
+
+const MapLayout = ({ isSelect, className, markerChangedFunc }: IMapLayoutProps) => {
+    const db = getDatabase(app);
+    const sightsRef = ref(db, "sights");
+    const [sightsData, setSightsData] = React.useState<ISight[]>([]);
+
+    React.useEffect(() => {
+        onValue(sightsRef, (snapshot) => {
+            // ? Convert object to array. Object keys are sight ids.
+            const data = snapshot.val();
+            const sights = data ? Object?.keys(data)?.map((key) => ({ ...data[key], id: key })) : [];
+            setSightsData(sights);
+        });
+    }, []);
+
+    const [selectLocationMarkerPos, setSelectLocationMarkerPos] = React.useState<{ lat: number; lng: number }>({
+        lat: 47.2669677734375,
+        lng: 19.50330352783203,
+    });
+
+    const renderSelectLocationMarker = (): React.ReactNode => {
+        if (isSelect) {
+            return <SelectLocationMarker markerChangedFunc={markerChangedFunc} position={selectLocationMarkerPos} />;
+        }
+
+        if (sightsData) {
+            return sightsData.map((sight) => <LocationMarker key={sight.id} {...sight} />);
+        }
+    };
+
     return (
-        <section className="h-screen flex justify-center items-center">
+        <section className={twMerge("h-screen flex justify-center items-center", className)}>
             <APIProvider apiKey={import.meta.env.VITE_PUBLIC_MAP_API_KEY}>
                 <Map
+                    mapId={import.meta.env.VITE_MAP_ID}
                     defaultCenter={CENTER_OF_HUNGARY}
                     defaultZoom={7}
                     style={{
@@ -28,8 +80,20 @@ const MapLayout = () => {
                     streetViewControl={false}
                     keyboardShortcuts={true}
                     rotateControl={true}
+                    onClick={(e) => {
+                        const latLng = e.detail.latLng;
+
+                        if (latLng) {
+                            setSelectLocationMarkerPos({
+                                lat: latLng.lat,
+                                lng: latLng.lng,
+                            });
+                            markerChangedFunc && markerChangedFunc(latLng.lat, latLng.lng);
+                        }
+                    }}
                 >
-                    {/* <Marker position={position} /> */}
+                    // TODO: Create a control to hide and close current location window
+                    {renderSelectLocationMarker()}
                 </Map>
             </APIProvider>
         </section>

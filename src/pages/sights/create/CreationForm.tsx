@@ -10,13 +10,16 @@ import { v4 as uuidv4 } from "uuid";
 import { toast } from "react-toastify";
 import { useAuthContext } from "../../../features/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
+import MapCreation from "./MapCreation";
 
-interface ISightCreation {
+export interface ISightCreation {
     name: string;
     location: string;
     description: string;
     coverImg: File[];
     tags?: string[];
+    latitude?: number;
+    longitude?: number;
 }
 
 const CreationForm = () => {
@@ -61,6 +64,10 @@ const CreationForm = () => {
                 userId: currentUser?.uid,
                 createdAt: currentDate,
                 updatedAt: currentDate,
+                coordinates: {
+                    lat: values.latitude,
+                    lng: values.longitude,
+                },
             });
 
             resetForm();
@@ -82,6 +89,8 @@ const CreationForm = () => {
                 location: "",
                 description: "",
                 coverImg: [],
+                latitude: undefined,
+                longitude: undefined,
             }}
             onSubmit={handleSubmit}
             validationSchema={Yup.object().shape({
@@ -91,6 +100,8 @@ const CreationForm = () => {
                 coverImg: Yup.array()
                     .required("Borítókép feltöltése kötelező!")
                     .min(1, "Borítókép feltöltése kötelező!"),
+                latitude: Yup.number().required("A látványosság helyének kiválasztása kötelező!"),
+                longitude: Yup.number().required("A látványosság helyének kiválasztása kötelező!"),
             })}
         >
             {({ isSubmitting, isValid }) => {
@@ -126,7 +137,8 @@ const CreationForm = () => {
                                 required
                                 title="Leírás"
                             />
-                            <div className="self-start">
+                            <div className="self-start flex flex-col gap-1">
+                                <h1 className="text-2xl text-gray-primary font-medium text-left">Borítókép</h1>
                                 <InputFileUpload
                                     name="coverImg"
                                     label="Kép feltöltése"
@@ -134,6 +146,7 @@ const CreationForm = () => {
                                     title="Borítókép feltöltése"
                                 />
                             </div>
+                            <MapCreation latName="latitude" lngName="longitude" />
                             <div className="flex flex-col gap-4 mt-1">
                                 <hr className="border-gray-light" />
                                 {/* // ? Submit button */}
