@@ -1,19 +1,19 @@
-import React from "react";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
-import SelectLocationMarker from "./SelectLocationMarker";
+import { getDatabase, onValue, ref } from "firebase/database";
+import React from "react";
 import { twMerge } from "tailwind-merge";
 import app from "../../firebase";
-import { getDatabase, ref, onValue } from "firebase/database";
 import type { ISight } from "../../pages/sights/SightCard";
 import LocationMarker from "./LocationMarker";
+import SelectLocationMarker from "./SelectLocationMarker";
 
-const HUNGARY_BOUNDS = {
+export const HUNGARY_BOUNDS = {
     north: 48.62096405029297,
     south: 45.70890426635742,
     west: 16.00965118408203,
     east: 22.97498321533203,
 };
-const CENTER_OF_HUNGARY = { lat: 47.2669677734375, lng: 19.50330352783203 } as const;
+export const CENTER_OF_HUNGARY = { lat: 47.2669677734375, lng: 19.50330352783203 } as const;
 
 interface IMapLayoutBase {
     className?: string;

@@ -1,10 +1,14 @@
-import React from "react";
-import Button from "../../components/Button";
+import { type FirebaseError } from "firebase/app";
+import { ref as databaseRef, getDatabase, update } from "firebase/database";
 import { IoMdHeart, IoMdHeartEmpty } from "react-icons/io";
+import { toast } from "react-toastify";
+import Button from "../../components/Button";
 import CustomRating from "../../components/CustomRating";
+import { useAuthContext } from "../../features/auth/AuthContext";
+import app from "../../firebase";
 
 export interface ISight {
-    id: number;
+    id: string;
     name: string;
     description: string;
     rating?: number;
@@ -22,10 +26,60 @@ export interface ISight {
     };
 }
 
-const SightCard = (props: ISight) => {
-    // destructuring the props
-    const { id, name, description, rating = 4.5, photoUrl, location, likes = 1000 } = props;
-    const [isLiked, setIsLiked] = React.useState<boolean>(false);
+interface ISightCardProps extends ISight {
+    isLiked: boolean;
+}
+
+const SightCard = (props: ISightCardProps) => {
+    const { id, name, description, rating = 0, photoUrl, location, likes = 0, isLiked } = props;
+    const { currentUser } = useAuthContext();
+
+    const db = getDatabase(app);
+    const userLikedSightsRef = databaseRef(db, `users/${currentUser?.uid}/likedSights`);
+    const sightRef = databaseRef(db, `sights/${id}`);
+
+    const handleLikeButtonClicked = async () => {
+        if (isLiked) {
+            try {
+                // ? Decrease the likes count
+                await update(sightRef, {
+                    likes: likes - 1,
+                });
+                await update(userLikedSightsRef, {
+                    [id]: null,
+                });
+            } catch (error) {
+                switch ((error as FirebaseError).code) {
+                    case "PERMISSION_DENIED":
+                        toast.error("Jelenkezz be a látnivaló kedveléséhez!");
+                        break;
+                    default:
+                        toast.error("Hiba történt a látnivaló kedvelése közben!");
+                        break;
+                }
+            }
+        } else {
+            try {
+                // ? Increase the likes count
+                await update(sightRef, {
+                    likes: likes + 1,
+                });
+                await update(userLikedSightsRef, {
+                    [id]: true,
+                });
+            } catch (error) {
+                console.error(error);
+                switch ((error as FirebaseError).code) {
+                    case "PERMISSION_DENIED":
+                        toast.error("Jelentkezz be a látnivaló kedveléséhez!");
+                        break;
+                    default:
+                        toast.error("Hiba történt a látnivaló kedvelése közben!");
+                        break;
+                }
+            }
+        }
+    };
 
     return (
         <article
@@ -80,14 +134,9 @@ const SightCard = (props: ISight) => {
                     </Button>
                     <div className="flex items-center gap-1 select-none">
                         <p>{likes}</p>
-                        <Button
-                            className="px-0 py-0 bg-transparent"
-                            onClick={() => {
-                                setIsLiked((prev) => !prev);
-                            }}
-                        >
+                        <Button className="px-0 py-0 bg-transparent" onClick={handleLikeButtonClicked}>
                             {isLiked ? (
-                                <IoMdHeart className="text-3xl text-[#ff3d47]" />
+                                <IoMdHeart className="text-3xl text-red-heart" />
                             ) : (
                                 <IoMdHeartEmpty className="text-3xl" />
                             )}

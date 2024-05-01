@@ -1,11 +1,11 @@
+import { useAnimate } from "framer-motion";
 import React from "react";
 import Button from "../Button";
 import { type ISlider } from "./Slider";
-import { useAnimate } from "framer-motion";
 import { useSliderContext } from "./SliderContext";
 
 const Step = (props: ISlider & { index: number }) => {
-    const { id, author, title, location, image, description } = props;
+    const { id, name, location, photoUrl, description } = props;
     const [scope, animate] = useAnimate();
     const { activeIndex } = useSliderContext();
 
@@ -71,20 +71,20 @@ const Step = (props: ISlider & { index: number }) => {
     return (
         <article ref={scope} className="absolute w-[800px]">
             <img
-                src={image}
-                alt={title?.toLowerCase().trim().replace(/\s/g, "-")}
+                src={photoUrl}
+                alt={name?.toLowerCase().trim().replace(/\s/g, "-")}
                 className="absolute -left-[230px] top-2 object-cover w-[400px] h-[350px] rounded-3xl shadow-xl shadow-gray-700"
             />
-            <div className="grid gap-4 pt-5 ml-[220px]">
+            <div className="grid gap-3 pt-5 ml-[220px]">
                 <div className="flex flex-col gap-0 text-white">
                     <div className="SliderHeader flex flex-row gap-4 items-center">
-                        <h1 className="text-[35px] font-bold">{title}</h1>
+                        <h1 className="text-[35px] font-bold">{name}</h1>
                         <span className="font-black">-</span>
                         <h2 className="text-[22px]">{location}</h2>
                     </div>
-                    <span className="SliderAuthor text-input-text text-base">{author}</span>
                 </div>
                 <p className="text-white leading-[45px] text-lg">{description}</p>
+                <span className="SliderAuthor"></span>
                 <Button
                     linkProps={{
                         href: `/sights/${id}`,

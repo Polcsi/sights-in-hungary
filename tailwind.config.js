@@ -16,6 +16,9 @@ export default {
         },
         "green": {
           "primary": "#1cc987"
+        },
+        "red": {
+          "heart": "#ff3d47"
         }
       }
     },

@@ -1,6 +1,6 @@
+import { AdvancedMarker, InfoWindow, useAdvancedMarkerRef } from "@vis.gl/react-google-maps";
 import React from "react";
 import type { ISight } from "../../pages/sights/SightCard";
-import { AdvancedMarker, InfoWindow, useAdvancedMarkerRef } from "@vis.gl/react-google-maps";
 import Button from "../Button";
 
 interface ILocationMarker extends ISight {}
@@ -27,7 +27,7 @@ const LocationMarker = (props: ILocationMarker) => {
                         setisOpen(false);
                     }}
                 >
-                    <div className="flex flex-col gap-2 p-2">
+                    <div className="flex flex-col gap-2 p-2 max-w-[400px]">
                         <img
                             className="rounded-lg h-[130px] w-full object-cover"
                             src={props.photoUrl}

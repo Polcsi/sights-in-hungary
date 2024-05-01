@@ -1,9 +1,5 @@
-import React from "react";
-import Button2 from "../../components/Button";
 import { Button, DialogActions, DialogContent, DialogTitle, Divider, Modal, ModalDialog } from "@mui/joy";
-import { MdDeleteForever } from "react-icons/md";
-import { IoIosWarning } from "react-icons/io";
-import { useAuthContext } from "../../features/auth/AuthContext";
+import { FirebaseError } from "firebase/app";
 import {
     AuthCredential,
     deleteUser,
@@ -14,13 +10,18 @@ import {
     reauthenticateWithPopup,
     signInWithPopup,
 } from "firebase/auth";
-import { getStorage, ref, deleteObject } from "firebase/storage";
-import app from "../../firebase";
-import { toast } from "react-toastify";
-import { FirebaseError } from "firebase/app";
+import { ref as databaseRef, getDatabase, remove } from "firebase/database";
+import { deleteObject, getStorage, ref } from "firebase/storage";
 import { Form, Formik, FormikProps } from "formik";
+import React from "react";
+import { IoIosWarning } from "react-icons/io";
+import { MdDeleteForever } from "react-icons/md";
+import { toast } from "react-toastify";
 import * as Yup from "yup";
 import BasicInputField from "../../components/BasicInputField";
+import Button2 from "../../components/Button";
+import { useAuthContext } from "../../features/auth/AuthContext";
+import app from "../../firebase";
 
 interface IPassword {
     password: string;
@@ -28,6 +29,7 @@ interface IPassword {
 
 const DeleteUserSection = () => {
     const storage = getStorage(app);
+    const db = getDatabase(app);
     const auth = getAuth(app);
     const { currentUser, setIsAuthUpdated, isGoogle } = useAuthContext();
 
@@ -59,6 +61,10 @@ const DeleteUserSection = () => {
                     await signInWithPopup(auth, provider);
                     await reauthenticateWithPopup(currentUser, provider);
                 }
+
+                const userRef = databaseRef(db, `users/${currentUser.uid}`);
+
+                await remove(userRef);
 
                 await deleteUser(currentUser);
 
