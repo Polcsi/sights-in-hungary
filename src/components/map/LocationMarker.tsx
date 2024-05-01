@@ -3,11 +3,13 @@ import React from "react";
 import type { ISight } from "../../pages/sights/SightCard";
 import Button from "../Button";
 
-interface ILocationMarker extends ISight {}
+interface ILocationMarker extends ISight {
+    onClick: (sight: ISight) => void;
+}
 const LocationMarker = (props: ILocationMarker) => {
     const [isOpen, setisOpen] = React.useState<boolean>(false);
     const [markerRef, marker] = useAdvancedMarkerRef();
-    const { id, coordinates } = props;
+    const { id, coordinates, onClick } = props;
 
     return (
         <React.Fragment>
@@ -17,9 +19,9 @@ const LocationMarker = (props: ILocationMarker) => {
                 position={{ lat: coordinates.lat, lng: coordinates.lng }}
                 onClick={() => {
                     setisOpen((prev) => !prev);
+                    onClick(props);
                 }}
             />
-            ;
             {isOpen ? (
                 <InfoWindow
                     anchor={marker}

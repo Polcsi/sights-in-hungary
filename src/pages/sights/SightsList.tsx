@@ -50,7 +50,18 @@ const SightsList = () => {
         onValue(sightsRef, (snapshot) => {
             // ? Convert object to array. Object keys are sight ids.
             const data = snapshot.val();
-            const sights = data ? Object?.keys(data)?.map((key) => ({ ...data[key], id: key })) : [];
+            const sights = data
+                ? Object?.keys(data)?.map((key) => {
+                      // ? Convert ratings object to array
+                      const ratings = data[key]?.ratings
+                          ? Object?.keys(data[key]?.ratings)?.map((ratingKey) => {
+                                return { ...data[key]?.ratings[ratingKey], id: ratingKey };
+                            })
+                          : [];
+
+                      return { ...data[key], id: key, ratings };
+                  })
+                : [];
             setSightsData(sights);
             setIsSightsLoading(false);
         });

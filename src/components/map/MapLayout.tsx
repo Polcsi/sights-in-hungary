@@ -1,4 +1,4 @@
-import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { APIProvider, ControlPosition, Map } from "@vis.gl/react-google-maps";
 import { getDatabase, onValue, ref } from "firebase/database";
 import React from "react";
 import { twMerge } from "tailwind-merge";
@@ -6,6 +6,7 @@ import app from "../../firebase";
 import type { ISight } from "../../pages/sights/SightCard";
 import LocationMarker from "./LocationMarker";
 import SelectLocationMarker from "./SelectLocationMarker";
+import WriteRating from "./WriteRating";
 
 export const HUNGARY_BOUNDS = {
     north: 48.62096405029297,
@@ -35,14 +36,28 @@ const MapLayout = ({ isSelect, className, markerChangedFunc }: IMapLayoutProps) 
     const db = getDatabase(app);
     const sightsRef = ref(db, "sights");
     const [sightsData, setSightsData] = React.useState<ISight[]>([]);
+    const [selectedSight, setSelectedSight] = React.useState<ISight | null>(null);
 
     React.useEffect(() => {
-        onValue(sightsRef, (snapshot) => {
-            // ? Convert object to array. Object keys are sight ids.
-            const data = snapshot.val();
-            const sights = data ? Object?.keys(data)?.map((key) => ({ ...data[key], id: key })) : [];
-            setSightsData(sights);
-        });
+        if (!isSelect) {
+            onValue(sightsRef, (snapshot) => {
+                // ? Convert object to array. Object keys are sight ids.
+                const data = snapshot.val();
+                const sights = data
+                    ? Object?.keys(data)?.map((key) => {
+                          // ? Convert ratings object to array
+                          const ratings = data[key]?.ratings
+                              ? Object?.keys(data[key]?.ratings)?.map((ratingKey) => {
+                                    return { ...data[key]?.ratings[ratingKey], id: ratingKey };
+                                })
+                              : [];
+
+                          return { ...data[key], id: key, ratings };
+                      })
+                    : [];
+                setSightsData(sights);
+            });
+        }
     }, []);
 
     const [selectLocationMarkerPos, setSelectLocationMarkerPos] = React.useState<{ lat: number; lng: number }>({
@@ -56,12 +71,20 @@ const MapLayout = ({ isSelect, className, markerChangedFunc }: IMapLayoutProps) 
         }
 
         if (sightsData) {
-            return sightsData.map((sight) => <LocationMarker key={sight.id} {...sight} />);
+            return sightsData.map((sight) => (
+                <LocationMarker
+                    key={sight.id}
+                    {...sight}
+                    onClick={(clickedSightData) => {
+                        setSelectedSight(clickedSightData);
+                    }}
+                />
+            ));
         }
     };
 
     return (
-        <section className={twMerge("h-screen flex justify-center items-center", className)}>
+        <section className={twMerge("h-screen flex justify-center items-center relative", className)}>
             <APIProvider apiKey={import.meta.env.VITE_PUBLIC_MAP_API_KEY}>
                 <Map
                     mapId={import.meta.env.VITE_MAP_ID}
@@ -74,6 +97,10 @@ const MapLayout = ({ isSelect, className, markerChangedFunc }: IMapLayoutProps) 
                     restriction={{
                         strictBounds: true,
                         latLngBounds: HUNGARY_BOUNDS,
+                    }}
+                    zoomControl={true}
+                    zoomControlOptions={{
+                        position: ControlPosition.LEFT_BOTTOM,
                     }}
                     fullscreenControl={false}
                     mapTypeControl={false}
@@ -95,6 +122,7 @@ const MapLayout = ({ isSelect, className, markerChangedFunc }: IMapLayoutProps) 
                     // TODO: Create a control to hide and close current location window
                     {renderSelectLocationMarker()}
                 </Map>
+                {!isSelect ? <WriteRating sightData={selectedSight} /> : null}
             </APIProvider>
         </section>
     );

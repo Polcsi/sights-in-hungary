@@ -1,8 +1,8 @@
-import { styled } from "@mui/material/styles";
-import Rating, { type RatingProps } from "@mui/material/Rating";
 import Box from "@mui/material/Box";
+import Rating, { type RatingProps } from "@mui/material/Rating";
+import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
-import { FaStar, FaRegStar } from "react-icons/fa";
+import { FaRegStar, FaStar } from "react-icons/fa";
 
 const StyledRating = styled(Rating)({
     "& .MuiRating-iconFilled": {
@@ -28,12 +28,12 @@ const CustomRating = (props: ICustomRatingProps) => {
         >
             {legend ? <Typography component="legend">{legend}</Typography> : null}
             <StyledRating
+                precision={1}
+                defaultValue={0}
                 {...otherProps}
                 name="customized-color"
-                defaultValue={0}
                 value={value}
                 getLabelText={(value: number) => `${value} Heart${value !== 1 ? "s" : ""}`}
-                precision={1}
                 icon={<FaStar fontSize="inherit" />}
                 emptyIcon={<FaRegStar fontSize="inherit" />}
             />

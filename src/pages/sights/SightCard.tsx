@@ -6,6 +6,7 @@ import Button from "../../components/Button";
 import CustomRating from "../../components/CustomRating";
 import { useAuthContext } from "../../features/auth/AuthContext";
 import app from "../../firebase";
+import calculateRating from "../../utils/calculateRating";
 
 export interface ISight {
     id: string;
@@ -24,6 +25,14 @@ export interface ISight {
         lat: number;
         lng: number;
     };
+    ratings: IRating[];
+}
+export interface IRating {
+    comment: string;
+    rating: number;
+    userId: string;
+    createdAt: string;
+    id: string;
 }
 
 interface ISightCardProps extends ISight {
@@ -31,12 +40,14 @@ interface ISightCardProps extends ISight {
 }
 
 const SightCard = (props: ISightCardProps) => {
-    const { id, name, description, rating = 0, photoUrl, location, likes = 0, isLiked } = props;
+    const { id, name, description, photoUrl, location, likes = 0, isLiked } = props;
     const { currentUser } = useAuthContext();
 
     const db = getDatabase(app);
     const userLikedSightsRef = databaseRef(db, `users/${currentUser?.uid}/likedSights`);
     const sightRef = databaseRef(db, `sights/${id}`);
+
+    const rating = calculateRating(props.ratings);
 
     const handleLikeButtonClicked = async () => {
         if (isLiked) {
@@ -121,7 +132,7 @@ const SightCard = (props: ISightCardProps) => {
                 </p>
                 <div className="flex gap-1 items-center">
                     <CustomRating value={rating} readOnly />
-                    <p className="text-lg">{rating}</p>
+                    <p className="text-lg">{rating}.0</p>
                 </div>
                 <div className="flex justify-between items-center">
                     <Button

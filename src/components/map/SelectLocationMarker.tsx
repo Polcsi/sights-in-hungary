@@ -1,13 +1,5 @@
+import { AdvancedMarker, InfoWindow, Pin, useAdvancedMarkerRef, useMap } from "@vis.gl/react-google-maps";
 import React from "react";
-import {
-    AdvancedMarker,
-    ControlPosition,
-    InfoWindow,
-    MapControl,
-    Pin,
-    useMap,
-    useMarkerRef,
-} from "@vis.gl/react-google-maps";
 import { IMapLayoutSelect } from "./MapLayout";
 
 interface ISelectLocationMarkerProps {
@@ -17,7 +9,7 @@ interface ISelectLocationMarkerProps {
 
 const SelectLocationMarker = ({ position, markerChangedFunc }: ISelectLocationMarkerProps) => {
     const map = useMap();
-    const [markerRef, marker] = useMarkerRef();
+    const [markerRef, marker] = useAdvancedMarkerRef();
     const [infowindowShown, setInfowindowShown] = React.useState<boolean>(false);
     const [newPosition, setNewPosition] = React.useState<{ lat: number; lng: number }>(position);
 
