@@ -32,6 +32,8 @@ interface IMapLayoutNoSelect extends IMapLayoutBase {
 
 type IMapLayoutProps = IMapLayoutNoSelect | IMapLayoutSelect;
 
+// TODO: Only show one info window at a time
+
 const MapLayout = ({ isSelect, className, markerChangedFunc }: IMapLayoutProps) => {
     const db = getDatabase(app);
     const sightsRef = ref(db, "sights");

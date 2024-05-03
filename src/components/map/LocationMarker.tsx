@@ -43,7 +43,7 @@ const LocationMarker = (props: ILocationMarker) => {
                             </div>
                             <hr />
                         </div>
-                        <p className="line-clamp-5">{props.description}</p>
+                        <p className="line-clamp-5 text-justify">{props.description}</p>
                         <Button className="bg-green-primary text-white rounded-lg self-start py-1 px-4">
                             Megtekintés
                         </Button>

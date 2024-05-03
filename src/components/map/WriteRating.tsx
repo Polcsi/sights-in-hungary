@@ -76,7 +76,7 @@ const WriteRating = ({ sightData }: IWriteRatingProps) => {
                 animate={!sightData ? "visibleDOM" : "hiddenDOM"}
                 className="absolute left-[50%] top-[50%] -translate-x-[50%] -translate-y-[50%] text-center w-full h-full  flex justify-center items-center z-10"
             >
-                <p className="text-lg font-normal">Válassz egy látnivalót</p>
+                <p className="text-lg font-normal">Válassz egy látnivalót a térképről!</p>
             </motion.div>
             <motion.div
                 variants={variant}
