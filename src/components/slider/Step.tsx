@@ -83,7 +83,7 @@ const Step = (props: ISlider & { index: number }) => {
                         <h2 className="text-[22px]">{location}</h2>
                     </div>
                 </div>
-                <p className="text-white leading-[45px] text-lg">{description}</p>
+                <p className="text-white leading-[45px] text-lg line-clamp-4">{description}</p>
                 <span className="SliderAuthor"></span>
                 <Button
                     linkProps={{

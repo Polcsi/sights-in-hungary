@@ -29,7 +29,7 @@ const LocationMarker = (props: ILocationMarker) => {
                         setisOpen(false);
                     }}
                 >
-                    <div className="flex flex-col gap-2 p-2 max-w-[400px]">
+                    <div className="flex flex-col gap-2 p-2 max-w-[300px]">
                         <img
                             className="rounded-lg h-[130px] w-full object-cover"
                             src={props.photoUrl}
@@ -43,7 +43,7 @@ const LocationMarker = (props: ILocationMarker) => {
                             </div>
                             <hr />
                         </div>
-                        <p>{props.description}</p>
+                        <p className="line-clamp-5">{props.description}</p>
                         <Button className="bg-green-primary text-white rounded-lg self-start py-1 px-4">
                             Megtekintés
                         </Button>

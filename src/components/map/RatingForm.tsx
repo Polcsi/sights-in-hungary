@@ -1,5 +1,6 @@
 import { getDatabase, ref, set } from "firebase/database";
-import { Form, Formik, FormikHelpers } from "formik";
+import { Form, Formik, FormikHelpers, FormikProps } from "formik";
+import React from "react";
 import { toast } from "react-toastify";
 import { v4 as uuidv4 } from "uuid";
 import * as Yup from "yup";
@@ -17,8 +18,10 @@ interface IRatingFormProps {
 type IRatingFormValues = Pick<IRating, "comment" | "rating">;
 
 const RatingForm = ({ id }: IRatingFormProps) => {
+    const formikRef = React.useRef<FormikProps<IRatingFormValues>>(null);
     const { currentUser } = useAuthContext();
     const db = getDatabase(app);
+
     const handleSubmit = async (values: IRatingFormValues, helpers: FormikHelpers<IRatingFormValues>) => {
         const { setSubmitting, resetForm } = helpers;
         const ratingId = uuidv4();
@@ -54,8 +57,17 @@ const RatingForm = ({ id }: IRatingFormProps) => {
         }
     };
 
+    React.useEffect(() => {
+        const formik = formikRef.current;
+
+        if (formik) {
+            formik.resetForm();
+        }
+    }, [id]);
+
     return (
         <Formik<IRatingFormValues>
+            innerRef={formikRef}
             initialValues={{
                 comment: "",
                 rating: 0,
