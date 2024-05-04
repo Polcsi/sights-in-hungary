@@ -1,12 +1,13 @@
-import { Formik, Form, type FormikHelpers } from "formik";
+import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth";
+import { getDatabase, ref, set } from "firebase/database";
+import { Form, Formik, type FormikHelpers } from "formik";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
 import BasicInputField from "../../../components/BasicInputField";
 import Button from "../../../components/Button";
-import RegisterFormHeader from "./RegisterFormHeader";
-import * as Yup from "yup";
-import { createUserWithEmailAndPassword, getAuth, updateProfile } from "firebase/auth";
 import app from "../../../firebase";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import RegisterFormHeader from "./RegisterFormHeader";
 
 interface IRegister {
     firstName: string;
@@ -19,6 +20,7 @@ interface IRegister {
 const RegisterForm = () => {
     const navigate = useNavigate();
     const auth = getAuth(app);
+    const db = getDatabase(app);
 
     const handleRegister = (values: IRegister, helpers: FormikHelpers<IRegister>) => {
         const { setFieldError, setSubmitting } = helpers;
@@ -28,6 +30,12 @@ const RegisterForm = () => {
                 // Update user profile
                 updateProfile(userCredential.user, {
                     displayName: `${values.firstName} ${values.lastName}`,
+                });
+                const userRef = ref(db, `users/${userCredential.user.uid}`);
+                // Create user in database
+                set(userRef, {
+                    email: values.email,
+                    name: `${values.firstName} ${values.lastName}`,
                 });
 
                 setSubmitting(false);

@@ -1,15 +1,15 @@
+import { ref as databaseRef, getDatabase, set, update } from "firebase/database";
+import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
 import { Form, Formik, FormikHelpers } from "formik";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { v4 as uuidv4 } from "uuid";
+import * as Yup from "yup";
 import BasicInputField from "../../../components/BasicInputField";
 import Button from "../../../components/Button";
 import InputFileUpload from "../../../components/InputFileUpload";
-import * as Yup from "yup";
-import { getDownloadURL, getStorage, ref as storageRef, uploadBytes } from "firebase/storage";
-import { getDatabase, ref as databaseRef, set } from "firebase/database";
-import app from "../../../firebase";
-import { v4 as uuidv4 } from "uuid";
-import { toast } from "react-toastify";
 import { useAuthContext } from "../../../features/auth/AuthContext";
-import { useNavigate } from "react-router-dom";
+import app from "../../../firebase";
 import MapCreation from "./MapCreation";
 
 export interface ISightCreation {
@@ -26,6 +26,7 @@ const CreationForm = () => {
     const storage = getStorage(app);
     const db = getDatabase(app);
     const { currentUser } = useAuthContext();
+    const userRef = databaseRef(db, `users/${currentUser?.uid}`);
     const navigate = useNavigate();
 
     const handleSubmit = async (values: ISightCreation, helpers: FormikHelpers<ISightCreation>) => {
@@ -68,6 +69,10 @@ const CreationForm = () => {
                     lat: values.latitude,
                     lng: values.longitude,
                 },
+            });
+
+            await update(userRef, {
+                name: currentUser?.displayName,
             });
 
             resetForm();

@@ -132,7 +132,7 @@ const SightCard = (props: ISightCardProps) => {
                 </p>
                 <div className="flex gap-1 items-center">
                     <CustomRating value={rating} readOnly />
-                    <p className="text-lg">{rating}.0</p>
+                    <p className="text-lg">{rating}</p>
                 </div>
                 <div className="flex justify-between items-center">
                     <Button

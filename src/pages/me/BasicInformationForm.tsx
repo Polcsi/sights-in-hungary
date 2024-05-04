@@ -1,10 +1,12 @@
+import { updateProfile } from "firebase/auth";
+import { getDatabase, ref, update } from "firebase/database";
 import { Form, Formik, FormikHelpers } from "formik";
+import { toast } from "react-toastify";
+import * as Yup from "yup";
 import BasicInputField from "../../components/BasicInputField";
 import Button from "../../components/Button";
-import * as Yup from "yup";
 import { useAuthContext } from "../../features/auth/AuthContext";
-import { updateProfile } from "firebase/auth";
-import { toast } from "react-toastify";
+import app from "../../firebase";
 
 interface IBasicInformation {
     firstName: string;
@@ -14,6 +16,8 @@ interface IBasicInformation {
 // TODO: After first name and last name are updated, the name should be updated on the UI as well
 const BasicInformationForm = () => {
     const { currentUser, setIsAuthUpdated } = useAuthContext();
+    const db = getDatabase(app);
+    const userRef = ref(db, `users/${currentUser?.uid}`);
     const names: string[] = currentUser?.displayName?.split(" ") ?? [];
     const lastName: string = names.at(-1) ?? "";
     const firstName: string = names.slice(0, -1).join(" ");
@@ -29,6 +33,10 @@ const BasicInformationForm = () => {
             if (currentUser) {
                 await updateProfile(currentUser, {
                     displayName: `${values.firstName} ${values.lastName}`,
+                });
+
+                await update(userRef, {
+                    name: `${values.firstName} ${values.lastName}`,
                 });
 
                 await currentUser.reload();

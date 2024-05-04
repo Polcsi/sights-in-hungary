@@ -44,7 +44,12 @@ const LocationMarker = (props: ILocationMarker) => {
                             <hr />
                         </div>
                         <p className="line-clamp-5 text-justify">{props.description}</p>
-                        <Button className="bg-green-primary text-white rounded-lg self-start py-1 px-4">
+                        <Button
+                            linkProps={{
+                                className: "bg-green-primary text-white rounded-lg self-start py-1 px-4",
+                                href: `/sights/${id}`,
+                            }}
+                        >
                             Megtekintés
                         </Button>
                     </div>

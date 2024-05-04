@@ -101,7 +101,7 @@ const WriteRating = ({ sightData }: IWriteRatingProps) => {
                     <span>{sightData?.location}</span>
                 </div>
                 <div className="flex gap-2 text-input-text font-medium items-center">
-                    <span className="font-semibold text-xl">{rating}.0</span>
+                    <span className="font-semibold text-xl">{rating}</span>
                     <span>értékelés</span>
                 </div>
                 <p className="text-justify text-base font-normal line-clamp-4 2xl:line-clamp-6">
