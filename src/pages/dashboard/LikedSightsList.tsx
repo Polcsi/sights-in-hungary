@@ -23,7 +23,7 @@ const LikedSightsList = () => {
         <section className="flex flex-col gap-1">
             <h1 className="pl-2 text-lg font-medium">Kedvelt látnivalók</h1>
             <div className="flex flex-col gap-3 border-2 border-gray-primary rounded-xl w-[350px] h-[calc(100vh-160px)] p-4 overflow-auto">
-                {likedSights?.length > 5 ? (
+                {likedSights?.length > 0 ? (
                     likedSights?.map((sightId) => {
                         return <LikedSightCard key={sightId} sightId={sightId} />;
                     })
